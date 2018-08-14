@@ -1,47 +1,49 @@
-const { readFileSync, writeFileSync } = require('fs')
-const { resolve } = require('path')
+const { readFileSync, writeFileSync, unlinkSync } = require('fs')
+const { resolve, basename } = require('path')
 const express = require('express')
 const puppeteer = require('puppeteer')
 const handlebars = require('handlebars')
 const app = express()
 
-// should be async (?)
-const browser = puppeteer.launch()
+const badgeFolder = resolve('./badges')
 
 const hbsTemplateToHtml = async (
   templatePath,
   data = {},
-  targetBase = './badges',
+  targetBase = badgeFolder,
   defaultDataPath = `${templatePath.replace('.hbs', '.js')}`
 ) => {
   let defaults = require(defaultDataPath)
   let source = await readFileSync(templatePath).toString()
   let compiler = handlebars.compile(source)
   let html = compiler({ ...defaults, ...data })
-  await writeFileSync(`${targetBase}/badge.html`, html)
-  return resolve(`${targetBase}/badge.html`)
+  await writeFileSync(`${badgeFolder}/badge.html`, html)
+  return resolve(`${badgeFolder}/badge.html`)
 }
 
 const htmlToPng = async (
   htmlPath
 ) => {
+  const browser = await puppeteer.launch()
   const page = await browser.newPage()
   page.setViewport({ width: 1280, height: 926 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
   await page.waitForSelector('.badge')
   const svgImage = await page.$('.badge')
+  let name = basename(htmlPath).replace('html', 'png')
   await svgImage.screenshot({
-    path: './logo-screenshot.png',
+    path: `${badgeFolder}/${name}`,
     omitBackground: true
   })
-  await page.close()
-  return resolve('./logo-screenshot.png')
+  await browser.close()
+  return resolve(`${badgeFolder}/${name}`)
 }
 
 const start = async () => {
   app.get('/svg/:type/:style', async function (req, res) {
     let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.type}/${req.params.style}.hbs`), req.query)
     let pngPath = await htmlToPng(htmlPath)
+    await unlinkSync(htmlPath)
     res.sendFile(pngPath)
   })
   app.listen(3000)
