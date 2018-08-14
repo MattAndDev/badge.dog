@@ -1,0 +1,27 @@
+<style media="screen">
+  .simple {
+    display: grid;
+    font-family: sans-serif;
+    font-weight: lighter;
+    grid-template-columns: auto auto;
+    height: 100px;
+    line-height: 100px;
+  }
+  .simple_left,
+  .simple_right {
+    text-align: center;
+  }
+  .simple_left {
+    background: {{leftBgColor}};
+    color: {{leftTextColor}};
+  }
+  .simple_right {
+    background: {{rightBgColor}};
+    color: {{rightTextColor}};
+  }
+</style>
+<div class="badge simple">
+  <title>{{title}}</title>
+  <span class="simple_left">{{leftCopy}}</span>
+  <span class="simple_right">{{rightCopy}}</span>
+</div>
