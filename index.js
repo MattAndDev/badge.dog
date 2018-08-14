@@ -5,6 +5,9 @@ const puppeteer = require('puppeteer')
 const handlebars = require('handlebars')
 const app = express()
 
+// should be async (?)
+const browser = puppeteer.launch()
+
 const hbsTemplateToHtml = async (
   templatePath,
   data = {},
@@ -19,26 +22,28 @@ const hbsTemplateToHtml = async (
   return resolve(`${targetBase}/badge.html`)
 }
 
+const htmlToPng = async (
+  htmlPath
+) => {
+  const page = await browser.newPage()
+  page.setViewport({ width: 1280, height: 926 })
+  await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
+  await page.waitForSelector('.badge')
+  const svgImage = await page.$('.badge')
+  await svgImage.screenshot({
+    path: './logo-screenshot.png',
+    omitBackground: true
+  })
+  await page.close()
+  return resolve('./logo-screenshot.png')
+}
+
 const start = async () => {
-  const browser = await puppeteer.launch()
   app.get('/svg/:type/:style', async function (req, res) {
-    const page = await browser.newPage()
     let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.type}/${req.params.style}.hbs`), req.query)
-    page.setViewport({ width: 1280, height: 926 })
-    // Navigate to this blog post and wait a bit.
-    await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
-    await page.waitForSelector('.badge')
-    // Select the #svg img element and save the screenshot.
-    const svgImage = await page.$('.badge')
-    await svgImage.screenshot({
-      path: './logo-screenshot.png',
-      omitBackground: true
-    })
-    await page.close()
-    res.sendFile(resolve('./logo-screenshot.png'))
+    let pngPath = await htmlToPng(htmlPath)
+    res.sendFile(pngPath)
   })
   app.listen(3000)
 }
-
 module.exports = start()
-console.log('hi')
