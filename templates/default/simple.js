@@ -2,8 +2,8 @@ module.exports = {
   title: 'Default simple badge',
   leftCopy: 'FUCK IT',
   rightCopy: 'SHIP IT',
-  leftBgColor: 'red',
-  rightBgColor: 'purple',
-  leftTextColor: 'white',
-  rightTextColor: 'white'
+  leftBgColor: '#20A69A',
+  rightBgColor: '#043B40',
+  leftTextColor: '#FFF',
+  rightTextColor: '#FFF'
 }

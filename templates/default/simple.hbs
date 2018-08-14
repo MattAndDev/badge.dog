@@ -1,14 +1,18 @@
 <style media="screen">
   .simple {
-    display: grid;
+    display: inline-grid;
+    -webkit-font-smoothing: antialiased;
     font-family: sans-serif;
-    font-weight: lighter;
-    grid-template-columns: auto auto;
-    height: 100px;
-    line-height: 100px;
+    font-size: 7px;
+    font-weight: bold;
+    grid-template-columns: fit-content(40px) fit-content(40px);
+    height: 14px;
+    line-height: 14px;
   }
   .simple_left,
   .simple_right {
+    padding: 0 10px;
+    white-space: nowrap;
     text-align: center;
   }
   .simple_left {
