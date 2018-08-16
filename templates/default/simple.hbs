@@ -11,6 +11,7 @@ let defaults = {
   leftTextColor: '#FFF',
   rightTextColor: '#FFF',
   paddingVer: 16,
+  fontSize: 14,
   paddingHor: 16,
   font: 'Lato'
 }
@@ -26,12 +27,13 @@ defs.node.innerHTML = `
 let blocks = ['left', 'right']
 let offset = 0
 blocks.forEach((block, i) => {
-  let sizer = svg.text(config[`${block}Copy`]).move(0,0).font({family: config.font})
+  let sizer = svg.text(config[`${block}Copy`]).move(0,0).font({family: config.font, size: config.fontSize})
   let bgSize = [sizer.node.getBBox().width  + config.paddingHor ,sizer.node.getBBox().height + config.paddingVer]
   let bg = svg.rect(...bgSize).fill(config[`${block}BgColor`]).move(0,0).x(offset)
-  let text = svg.text(config[`${block}Copy`]).fill(config[`${block}TextColor`]).move(0,0).font({family: config.font}).y(config.paddingVer/ 2).x(offset + config.paddingHor/ 2)
+  let text = svg.text(config[`${block}Copy`]).fill(config[`${block}TextColor`]).move(0,0).font({family: config.font, size: config.fontSize}).y(config.paddingVer/ 2).x(offset + config.paddingHor/ 2)
   offset = offset + bgSize[0]
   sizer.node.remove()
 })
+svg.he
 
 </script>
