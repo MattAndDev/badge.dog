@@ -1,4 +1,4 @@
-const { readFileSync, writeFileSync, unlinkSync, existsSync } = require('fs')
+const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
 const { resolve } = require('path')
 const express = require('express')
 const puppeteer = require('puppeteer')
@@ -46,17 +46,21 @@ const generateHash = async (str) => {
 }
 
 const start = async () => {
-  app.get('/svg/:type/:style', async function (req, res) {
+  app.get('/woof/:template', async function (req, res) {
     let urlHash = await generateHash(req.url)
-    if (existsSync(`${badgeFolder}/${urlHash}.svg`)) {
-      res.sendFile(resolve(`${badgeFolder}/${urlHash}.svg`))
+    let targetDir = `${badgeFolder}/${req.params.template}`
+    if (existsSync(`${targetDir}/${urlHash}.svg`)) {
+      res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.type}/${req.params.style}.hbs`), req.query)
+    let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.template}.hbs`), req.query)
     let svg = await renderHtmlAndGetSvg(htmlPath)
-    await writeFileSync(`${badgeFolder}/${urlHash}.svg`, svg)
+    if (!existsSync(targetDir)) {
+      mkdirSync(targetDir)
+    }
+    await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
     await unlinkSync(htmlPath)
-    res.sendFile(resolve(`${badgeFolder}/${urlHash}.svg`))
+    res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
   })
   app.listen(3100)
 }
