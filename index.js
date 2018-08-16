@@ -31,6 +31,7 @@ const renderHtmlAndGetSvg = async (
   page.setViewport({ width: 1000, height: 1000 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
   await page.waitForSelector('#badge')
+  await page.waitFor(2000)
   const svg = await page.$eval('#badge', el => el.innerHTML)
   await browser.close()
   return svg
@@ -55,7 +56,7 @@ const start = async () => {
     let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.type}/${req.params.style}.hbs`), req.query)
     let svg = await renderHtmlAndGetSvg(htmlPath)
     await writeFileSync(`${badgeFolder}/${urlHash}.svg`, svg)
-    await unlinkSync(htmlPath)
+    // await unlinkSync(htmlPath)
     res.sendFile(resolve(`${badgeFolder}/${urlHash}.svg`))
   })
   app.listen(3000)
