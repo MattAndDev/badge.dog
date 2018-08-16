@@ -46,7 +46,7 @@ const generateHash = async (str) => {
 }
 
 const start = async () => {
-  app.get('/woof/:template', async function (req, res) {
+  app.get('/woof/:template.svg', async function (req, res) {
     let urlHash = await generateHash(req.url)
     let targetDir = `${badgeFolder}/${req.params.template}`
     if (existsSync(`${targetDir}/${urlHash}.svg`)) {
