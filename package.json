@@ -4,6 +4,7 @@
   "description": "For the badge",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "lint": "standard"
   },
   "repository": {
