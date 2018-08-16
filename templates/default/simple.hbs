@@ -1,31 +1,23 @@
-<style media="screen">
-  .simple {
-    display: inline-grid;
-    -webkit-font-smoothing: antialiased;
-    font-family: sans-serif;
-    font-size: 7px;
-    font-weight: bold;
-    grid-template-columns: fit-content(40px) fit-content(40px);
-    height: 14px;
-    line-height: 14px;
-  }
-  .simple_left,
-  .simple_right {
-    padding: 0 10px;
-    white-space: nowrap;
-    text-align: center;
-  }
-  .simple_left {
-    background: {{leftBgColor}};
-    color: {{leftTextColor}};
-  }
-  .simple_right {
-    background: {{rightBgColor}};
-    color: {{rightTextColor}};
-  }
-</style>
-<div class="badge simple">
-  <title>{{title}}</title>
-  <span class="simple_left">{{leftCopy}}</span>
-  <span class="simple_right">{{rightCopy}}</span>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.5/svg.min.js"></script>
+<div id="badge">
 </div>
+<script type="text/javascript">
+let config = {{{data}}};
+// initialize SVG.js
+var svg = SVG('badge')
+let defs = svg.defs()
+defs.node.innerHTML = `<style type="text/css">@import url('https://fonts.googleapis.com/css?family=Lora');</style>`
+// svg pink square
+let leftTextSizer = svg.text(config.leftCopy).fill(config.leftTextColor).move(0,0)
+let leftBgSize = [leftTextSizer.node.getBBox().width ,leftTextSizer.node.getBBox().height]
+leftTextSizer.node.remove()
+let leftBg = svg.rect(...leftBgSize).fill(config.leftBgColor)
+let leftText = svg.text(config.leftCopy).fill(config.leftTextColor).y(0).font({family: 'Lora'})
+let rightTextSizer = svg.text(config.rightCopy).fill(config.rightTextColor).move(0,0)
+let rightBgSize = [rightTextSizer.node.getBBox().width ,rightTextSizer.node.getBBox().height]
+rightTextSizer.node.remove()
+let rightBg = svg.rect(...rightBgSize).fill(config.rightBgColor).x(leftBgSize[0])
+let rightText = svg.text(config.rightCopy).fill(config.rightTextColor).x(leftBgSize[0]).y(0)
+svg.size(rightBgSize[0] + leftBgSize[0])
+// svg.def()
+</script>
