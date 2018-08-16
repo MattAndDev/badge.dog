@@ -48,8 +48,8 @@ const generateHash = async (str) => {
 const start = async () => {
   app.get('/svg/:type/:style', async function (req, res) {
     let urlHash = await generateHash(req.url)
-    if (existsSync(`${badgeFolder}/${urlHash}.png`)) {
-      res.sendFile(resolve(`${badgeFolder}/${urlHash}.png`))
+    if (existsSync(`${badgeFolder}/${urlHash}.svg`)) {
+      res.sendFile(resolve(`${badgeFolder}/${urlHash}.svg`))
       return false
     }
     let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.type}/${req.params.style}.hbs`), req.query)
