@@ -2,22 +2,33 @@
 <div id="badge">
 </div>
 <script type="text/javascript">
-let config = {{{data}}};
+let overrides = {{{data}}};
+let defaults = {
+  title: 'Default simple badge',
+  leftCopy: 'FUCK IT',
+  rightCopy: 'SHIP IT',
+  leftBgColor: '#20A69A',
+  rightBgColor: '#043B40',
+  leftTextColor: '#FFF',
+  rightTextColor: '#FFF',
+  font: 'Lora'
+}
+let config = {...defaults, ...overrides}
 // initialize SVG.js
 var svg = SVG('badge')
 let defs = svg.defs()
-defs.node.innerHTML = `<style type="text/css">@import url('https://fonts.googleapis.com/css?family=Lora');</style>`
+defs.node.innerHTML = `<style type="text/css">@import url('https://fonts.googleapis.com/css?family=${config.font}&text=${config.leftCopy}%20${config.rightCopy}');</style>`
 // svg pink square
 let leftTextSizer = svg.text(config.leftCopy).fill(config.leftTextColor).move(0,0)
 let leftBgSize = [leftTextSizer.node.getBBox().width ,leftTextSizer.node.getBBox().height]
 leftTextSizer.node.remove()
 let leftBg = svg.rect(...leftBgSize).fill(config.leftBgColor)
-let leftText = svg.text(config.leftCopy).fill(config.leftTextColor).y(0).font({family: 'Lora'})
+let leftText = svg.text(config.leftCopy).fill(config.leftTextColor).y(0).font({family: config.font})
 let rightTextSizer = svg.text(config.rightCopy).fill(config.rightTextColor).move(0,0)
 let rightBgSize = [rightTextSizer.node.getBBox().width ,rightTextSizer.node.getBBox().height]
 rightTextSizer.node.remove()
 let rightBg = svg.rect(...rightBgSize).fill(config.rightBgColor).x(leftBgSize[0])
-let rightText = svg.text(config.rightCopy).fill(config.rightTextColor).x(leftBgSize[0]).y(0)
+let rightText = svg.text(config.rightCopy).fill(config.rightTextColor).x(leftBgSize[0]).y(0).font({family: config.font})
 svg.size(rightBgSize[0] + leftBgSize[0])
 // svg.def()
 </script>

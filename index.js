@@ -13,10 +13,9 @@ const hbsTemplateToHtml = async (
   targetBase = badgeFolder,
   defaultDataPath = `${templatePath.replace('.hbs', '.js')}`
 ) => {
-  let defaults = require(defaultDataPath)
   let source = await readFileSync(templatePath).toString()
   let compiler = handlebars.compile(source)
-  let html = compiler({ data: JSON.stringify({...defaults, ...data}) })
+  let html = compiler({ data: JSON.stringify({...data}) })
   let name = new Date().getUTCMilliseconds()
   await writeFileSync(`${badgeFolder}/${name}.html`, html)
   return resolve(`${badgeFolder}/${name}.html`)
