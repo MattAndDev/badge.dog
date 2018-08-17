@@ -11,13 +11,16 @@ const woof = (app, storageDir) => {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.template}.hbs`), req.query, storageDir)
+    let hbsData = req.query
+    // meh
+    hbsData.baseUrl = req.headers.host
+    let htmlPath = await hbsTemplateToHtml(resolve(`./templates/${req.params.template}.hbs`), hbsData, storageDir)
     let svg = await renderHtmlAndGetSvg(htmlPath)
     if (!existsSync(targetDir)) {
       mkdirSync(targetDir)
     }
     await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
-    await unlinkSync(htmlPath)
+    // await unlinkSync(htmlPath)
     res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
   })
 }
@@ -26,7 +29,6 @@ const hbsTemplateToHtml = async (
   templatePath,
   data = {},
   storageDir,
-  defaultDataPath = `${templatePath.replace('.hbs', '.js')}`
 ) => {
   let source = await readFileSync(templatePath).toString()
   let compiler = handlebars.compile(source)
