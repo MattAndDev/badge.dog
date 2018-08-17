@@ -20,7 +20,7 @@ const woof = (app, storageDir) => {
       mkdirSync(targetDir)
     }
     await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
-    // await unlinkSync(htmlPath)
+    await unlinkSync(htmlPath)
     res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
   })
 }
