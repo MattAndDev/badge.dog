@@ -2,3 +2,4 @@ node_modules/
 badges/*
 !badges/.gitkeep
 .DS_Store
+env.js

@@ -39,7 +39,9 @@
     sizer
       .move(0,0)
       .font({family: config.googleFontName, size: config.fontSize})
-    await sleep(500)
+
+    // wait for render
+    await sleep(100)
 
     let bgSize = [sizer.node.getBBox().width + config.paddingHor ,sizer.node.getBBox().height + config.paddingVer]
     let bg = svg.rect(...bgSize)
