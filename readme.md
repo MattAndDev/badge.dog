@@ -33,6 +33,9 @@ Available templates (more coming soon):
 
 [see the url](https://badge.dog/woof/simple.svg?leftText=go&googleFontName=IBM+Plex+Serif&rightText=swag&leftBgColor=%23C2577B&rightBgColor=%2382708E&fontSize=20)
 
+### Sure, even icons
+
+[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg?leftText=PAINT%20WITH%20BADGE.DOG&rightText=🎨&googleFontName=Baloo+Bhai&rightBgColor=%23F3F2F0&leftBgColor=%23F7715D&fontSize=20&paddingHor=20)](https://badge.dog/woof/simple.svg?leftText=PAINT%20WITH%20BADGE.DOG&rightText=🎨&googleFontName=Baloo+Bhai&rightBgColor=%23F3F2F0&leftBgColor=%23F7715D&fontSize=20&paddingHor=20)
 
 
 #### THANKS
