@@ -37,19 +37,19 @@ const addQueryToTemplate = async (
   let js = `
     <script id="data" type="application/javascript">
       const query = ${JSON.stringify({...query})}
-    </script>`
+    </script>`.replace(/^ {4}/gm, '')
   return `${js}\n${source}`
 }
 
 const renderHtmlAndGetSvg = async (
   htmlPath
 ) => {
-  const browser = await puppeteer.launch({})
-  const page = await browser.newPage()
+  let browser = await puppeteer.launch({})
+  let page = await browser.newPage()
   page.setViewport({ width: 1000, height: 1000 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
   await page.waitForSelector('#done')
-  const svg = await page.$eval('#badge', el => el.innerHTML)
+  let svg = await page.$eval('#badge', el => el.innerHTML)
   await browser.close()
   return svg
 }

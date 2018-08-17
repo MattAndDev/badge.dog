@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 
 const badgeFolder = resolve('./badges')
+
 const bark = async () => {
   woof(app, badgeFolder)
   bau(app)

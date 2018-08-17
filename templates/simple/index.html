@@ -22,6 +22,9 @@ function sleep (ms) {
 }
 
 let config = {...defaults, ...query}
+// cast opts
+config.paddingVer = parseInt(config.paddingVer)
+config.paddingHor = parseInt(config.paddingHor)
 var svg = SVG('badge')
 var element = svg.element('title').words(config.title)
 let defs = svg.defs()
