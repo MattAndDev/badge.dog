@@ -35,7 +35,13 @@ const hbsTemplateToHtml = async (
 ) => {
   let source = await readFileSync(templatePath).toString()
   let compiler = handlebars.compile(source)
-  let html = compiler({ data: JSON.stringify({...data}) })
+  let html = compiler(
+    {
+      json: `
+      <script id="data" type="application/json">
+        const data = ${JSON.stringify({...data})}
+      </script>`
+    })
   return html
 }
 
