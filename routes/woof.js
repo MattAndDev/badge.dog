@@ -7,6 +7,9 @@ const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
     let urlHash = await generateHash(req.url)
     let targetDir = `${storageDir}/${req.params.template}`
+    if (!existsSync(targetDir)) {
+      mkdirSync(targetDir)
+    }
     if (existsSync(`${targetDir}/${urlHash}.svg`) && !env.forceOverwite) {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
@@ -18,9 +21,6 @@ const woof = (app, storageDir) => {
     let htmlPath = `${targetDir}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
     let svg = await renderHtmlAndGetSvg(htmlPath)
-    if (!existsSync(targetDir)) {
-      mkdirSync(targetDir)
-    }
     await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
     if (!env.keepHtml) {
       await unlinkSync(htmlPath)
