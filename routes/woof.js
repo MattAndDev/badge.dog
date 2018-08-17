@@ -42,10 +42,7 @@ const hbsTemplateToHtml = async (
 const renderHtmlAndGetSvg = async (
   htmlPath
 ) => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    deviceScaleFactor: 2
-  })
+  const browser = await puppeteer.launch({})
   const page = await browser.newPage()
   page.setViewport({ width: 1000, height: 1000 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
