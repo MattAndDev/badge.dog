@@ -1,39 +1,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.5/svg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
 <div id="badge"></div>
 <script type="text/javascript">
-let overrides = {{{data}}};
-let defaults = {
-  title: 'Default simple badge',
-  leftCopy: 'FUCK IT',
-  rightCopy: 'SHIP IT',
-  leftBgColor: '#20A69A',
-  rightBgColor: '#043B40',
-  leftTextColor: '#FFF',
-  rightTextColor: '#FFF',
-  paddingVer: 16,
-  fontSize: 14,
-  paddingHor: 16,
-  font: 'Lato'
-}
-let config = {...defaults, ...overrides}
-var svg = SVG('badge')
-let defs = svg.defs()
-defs.node.innerHTML = `
-  <style type="text/css">
-    @import url('https://fonts.googleapis.com/css?family=${config.font}&text=${config.leftCopy}%20${config.rightCopy}');
-  </style>
-`
+(async () => {
+  let overrides = {{{data}}};
+  let defaults = {
+    title: 'Default simple badge',
+    leftCopy: 'FUCK IT',
+    rightCopy: 'SHIP IT',
+    leftBgColor: '#20A69A',
+    rightBgColor: '#043B40',
+    leftTextColor: '#FFF',
+    rightTextColor: '#FFF',
+    paddingVer: 16,
+    fontSize: 14,
+    paddingHor: 16,
+    googleFontName: 'Roboto'
+  }
+  
+  let config = {...defaults, ...overrides}
+  var svg = SVG('badge')
+  let defs = svg.defs()
+  // meh
+  let cssRaw = await fetch(`http://${config.baseUrl}/bau/encodefont/${config.googleFontName}?text=${config.leftCopy}%20${config.rightCopy}`)
+  let css = await cssRaw.text()
+  console.log(css);
+  defs.node.innerHTML = `
+    <style type="text/css">
+      ${css}
+    </style>
+   `
+  let blocks = ['left', 'right']
+  let offset = 0
+  blocks.forEach((block, i) => {
+    let sizer = svg.text(config[`${block}Copy`]).move(0,0).font({family: config.googleFontName, size: config.fontSize})
+    let bgSize = [sizer.node.getBBox().width  + config.paddingHor ,sizer.node.getBBox().height + config.paddingVer]
+    let bg = svg.rect(...bgSize).fill(config[`${block}BgColor`]).move(0,0).x(offset)
+    let text = svg.text(config[`${block}Copy`]).fill(config[`${block}TextColor`]).move(0,0).font({family: config.googleFontName, size: config.fontSize}).y(config.paddingVer/ 2).x(offset + config.paddingHor/ 2)
+    offset = offset + bgSize[0]
+    sizer.node.remove()
+  })
+  svg.size(offset)
+})()
 
-let blocks = ['left', 'right']
-let offset = 0
-blocks.forEach((block, i) => {
-  let sizer = svg.text(config[`${block}Copy`]).move(0,0).font({family: config.font, size: config.fontSize})
-  let bgSize = [sizer.node.getBBox().width  + config.paddingHor ,sizer.node.getBBox().height + config.paddingVer]
-  let bg = svg.rect(...bgSize).fill(config[`${block}BgColor`]).move(0,0).x(offset)
-  let text = svg.text(config[`${block}Copy`]).fill(config[`${block}TextColor`]).move(0,0).font({family: config.font, size: config.fontSize}).y(config.paddingVer/ 2).x(offset + config.paddingHor/ 2)
-  offset = offset + bgSize[0]
-  sizer.node.remove()
-})
-svg.size(offset)
+
+  
+
 
 </script>
+
+
+
+
