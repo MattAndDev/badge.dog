@@ -3,10 +3,10 @@
 ## Examples
 
 ### Default options
-[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg)](https://badge.dog/woof/simple.svg?leftCopy=BADGE&rightCopy=DOG)
+[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg)](https://badge.dog/woof/simple.svg)
 
 ### Custom
-[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg?googleFontName=IBM+Plex+Sans&leftCopy=for%20font&rightCopy=lovers&leftBgColor=%23C16B86&rightBgColor=%23325D7F)](https://badge.dog/woof/simple.svg?googleFontName=IBM+Plex+Sans&leftCopy=for%20font&rightCopy=lovers&leftBgColor=%23C16B86&rightBgColor=%23325D7F)
+[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg?leftText=go&googleFontName=IBM+Plex+Serif&rightText=swag&leftBgColor=%23C2577B&rightBgColor=%2382708E&fontSize=20)](https://badge.dog/woof/simple.svg?leftText=go&googleFontName=IBM+Plex+Serif&rightText=swag&leftBgColor=%23C2577B&rightBgColor=%2382708E&fontSize=20)
 
 ## Options (defaults)
 ```js

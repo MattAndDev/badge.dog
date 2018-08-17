@@ -6,10 +6,11 @@
 
 Pick your template and customise your badge to **make the readme great again**
 
-All badges are served at `https::/badge.dog/woof/{template-name}.svg`
+All badges are served at `https::/badge.dog/woof/{template-name}.svg`.
+
 All badges are highly customisable with query parameter, for details see the individual template readmes.
 
-Available templates (working on it):
+Available templates (more coming soon):
   - [simple](templates/simple/readme.md)
   
 ## Try it
