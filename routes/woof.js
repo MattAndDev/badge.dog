@@ -34,11 +34,11 @@ const addQueryToTemplate = async (
   query = {}
 ) => {
   let source = await readFileSync(templatePath).toString()
-  let json = `
-    <script id="data" type="application/json">
+  let js = `
+    <script id="data" type="application/javascript">
       const query = ${JSON.stringify({...query})}
     </script>`
-  return `${json}\n${source}`
+  return `${js}\n${source}`
 }
 
 const renderHtmlAndGetSvg = async (

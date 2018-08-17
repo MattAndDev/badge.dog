@@ -21,7 +21,7 @@ function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-let config = {...defaults, ...data}
+let config = {...defaults, ...query}
 var svg = SVG('badge')
 var element = svg.element('title').words(config.title)
 let defs = svg.defs()
