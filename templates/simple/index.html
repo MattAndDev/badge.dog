@@ -23,7 +23,7 @@ function sleep (ms) {
 
 let config = {...defaults, ...data}
 var svg = SVG('badge')
-var element = draw.element('title').words(config.title)
+var element = svg.element('title').words(config.title)
 let defs = svg.defs()
 // meh
 let cssRaw = await fetch(`http://localhost:3100/bau/encodefont/${config.googleFontName}?text=${config.leftText}%20${config.rightText}`)
