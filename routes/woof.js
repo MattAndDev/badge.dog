@@ -28,7 +28,7 @@ const woof = (app, storageDir) => {
 const hbsTemplateToHtml = async (
   templatePath,
   data = {},
-  storageDir,
+  storageDir
 ) => {
   let source = await readFileSync(templatePath).toString()
   let compiler = handlebars.compile(source)

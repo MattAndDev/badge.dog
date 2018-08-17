@@ -22,7 +22,7 @@
   var svg = SVG('badge')
   let defs = svg.defs()
   // meh
-  let cssRaw = await fetch(`http://${config.baseUrl}/bau/encodefont/${config.googleFontName}?text=${config.leftCopy}%20${config.rightCopy}`)
+  let cssRaw = await fetch(`http://localhost:3100/bau/encodefont/${config.googleFontName}?text=${config.leftCopy}%20${config.rightCopy}`)
   let css = await cssRaw.text()
   console.log(css);
   defs.node.innerHTML = `
