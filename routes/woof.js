@@ -1,8 +1,9 @@
 const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
 const { resolve } = require('path')
 const puppeteer = require('puppeteer')
-const handlebars = require('handlebars')
+
 const env = require('../env')
+
 const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
     let urlHash = await generateHash(req.url)
@@ -14,10 +15,9 @@ const woof = (app, storageDir) => {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    let hbsData = req.query
     // meh
-    hbsData.baseUrl = req.headers.host
-    let html = await hbsTemplateToHtml(resolve(`./templates/${req.params.template}.hbs`), hbsData)
+    req.query.baseUrl = req.headers.host
+    let html = await addQueryToTemplate(resolve(`./templates/${req.params.template}/index.html`), req.query)
     let htmlPath = `${targetDir}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
     let svg = await renderHtmlAndGetSvg(htmlPath)
@@ -29,20 +29,16 @@ const woof = (app, storageDir) => {
   })
 }
 
-const hbsTemplateToHtml = async (
+const addQueryToTemplate = async (
   templatePath,
-  data = {}
+  query = {}
 ) => {
   let source = await readFileSync(templatePath).toString()
-  let compiler = handlebars.compile(source)
-  let html = compiler(
-    {
-      json: `
-      <script id="data" type="application/json">
-        const data = ${JSON.stringify({...data})}
-      </script>`
-    })
-  return html
+  let json = `
+    <script id="data" type="application/json">
+      const query = ${JSON.stringify({...query})}
+    </script>`
+  return `${json}\n${source}`
 }
 
 const renderHtmlAndGetSvg = async (
