@@ -35,9 +35,21 @@ module.exports = {
         test: /\.s(c|a)ss$/,
         // shorthand, use MiniCssExtractPlugin only in production
         use: [
-          (process.env.NODE_ENV === 'production') ? MiniCssExtractPlugin.loader : 'style-loader',
+          (process.env.NODE_ENV === 'development') ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              indentedSyntax: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          (process.env.NODE_ENV === 'development') ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader'
         ]
       }
     ]
@@ -67,7 +79,6 @@ module.exports = {
   },
   serve: {
     port: 2000,
-    hot: true,
     open: true,
     content: [
       path.resolve('./public')
