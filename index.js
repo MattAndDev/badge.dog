@@ -1,13 +1,13 @@
 const { resolve } = require('path')
-const { woof, bau } = require('./routes')
+const { woof, utils } = require('./api/routes')
 const express = require('express')
 const app = express()
-
-const badgeFolder = resolve('./badges')
+// to env (?)
+const storageFolder = resolve('./storage')
 
 const bark = async () => {
-  woof(app, badgeFolder)
-  bau(app)
+  woof(app, storageFolder)
+  utils(app)
   app.use(express.static('./public'))
   app.listen(3100)
 }

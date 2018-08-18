@@ -39,5 +39,5 @@ Available templates (more coming soon):
 
 
 #### THANKS
-Inspired by [for the badge](https://forthebadge.com/) an api to generate your fancy badges on the fly.
+Inspired by [for-the-badge](https://forthebadge.com/) && [shields.io](https://shields.io)
 

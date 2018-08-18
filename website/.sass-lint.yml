@@ -1,0 +1,39 @@
+# General linter options
+options:
+  merge-default-rules: false
+
+# Rule Configuration
+rules:
+  # Enforce smacss sort order https://smacss.com/
+  property-sort-order:
+    - 1
+    -
+      order: smacss
+  # enforce extend before anything else
+  extends-before-mixins: 2
+  extends-before-declarations: 2
+  # enforce mixins at top of rules
+  mixins-before-declarations:
+    - 2
+    -
+      # exclude media query mixin
+      exclude:
+        - mq
+  no-warn: 0
+  no-debug: 1
+  no-ids: 2
+  no-important: 2
+  # readability
+  space-after-comma:
+    - 2
+    -
+      include: true
+  hex-notation:
+    - 2
+    -
+      style: uppercase
+  # indentation
+  indentation:
+    - 1
+    -
+      size: 2
