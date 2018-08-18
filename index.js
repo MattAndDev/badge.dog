@@ -1,9 +1,9 @@
 const { resolve } = require('path')
-const { woof, bau } = require('./routes')
+const { woof, bau } = require('./api/routes')
 const express = require('express')
 const app = express()
 
-const badgeFolder = resolve('./badges')
+const badgeFolder = resolve('./storage')
 
 const bark = async () => {
   woof(app, badgeFolder)

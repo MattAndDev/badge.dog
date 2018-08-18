@@ -1,5 +1,14 @@
-node_modules/
-badges/*
-!badges/.gitkeep
+# OS
 .DS_Store
+
+# deps
+node_modules/
+
+# env
 env.js
+
+# generated files
+storage/*
+!storage/.gitkeep
+public/*
+!public/.gitkeep

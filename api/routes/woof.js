@@ -2,7 +2,7 @@ const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = requi
 const { resolve } = require('path')
 const puppeteer = require('puppeteer')
 
-const env = require('../env')
+const env = require('../../env')
 
 const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
@@ -17,7 +17,7 @@ const woof = (app, storageDir) => {
     }
     // meh
     req.query.baseUrl = req.headers.host
-    let html = await addQueryToTemplate(resolve(`./templates/${req.params.template}/index.html`), req.query)
+    let html = await addQueryToTemplate(resolve(`./api/templates/${req.params.template}/index.html`), req.query)
     let htmlPath = `${targetDir}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
     let svg = await renderHtmlAndGetSvg(htmlPath)
