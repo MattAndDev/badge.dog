@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
 
 module.exports = {
   mode: (process.env.NODE_ENV === 'development') ? 'development' : 'production',
@@ -53,6 +54,9 @@ module.exports = {
     // this will kick in only in NODE_ENV production
     new MiniCssExtractPlugin({
       filename: `[name].css`
+    }),
+    new InjectManifest({
+      swSrc: './website/service-worker.js'
     })
   ],
   resolve: {
