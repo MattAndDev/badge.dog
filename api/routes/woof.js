@@ -15,8 +15,6 @@ const woof = (app, storageDir) => {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    // meh
-    req.query.baseUrl = req.headers.host
     let html = await addQueryToTemplate(resolve(`./api/templates/${req.params.template}/index.html`), req.query)
     let htmlPath = `${targetDir}/${urlHash}.html`
     await writeFileSync(htmlPath, html)

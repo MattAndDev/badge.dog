@@ -2,7 +2,7 @@ const url = require('url')
 const fetch = require('node-fetch')
 
 const bau = (app, storageDir) => {
-  app.get('/bau/encodefont/:fontName', async (req, res) => {
+  app.get('/utils/encodefont/:fontName', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     let googleFontUrl = `https://fonts.googleapis.com/css?family=${req.params.fontName}`
     let query = url.parse(req.url).query
