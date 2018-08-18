@@ -11,4 +11,4 @@ env.js
 storage/*
 !storage/.gitkeep
 public/*
-!public/.gitkeep
+!public/static/*
