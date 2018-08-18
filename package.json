@@ -7,7 +7,7 @@
     "server:start": "node index.js",
     "server:lint": "eslint *.js",
     "website:build": "webpack --config ./website/webpack.conf.js",
-    "website:dev": "webpack --config ./website/webpack.conf.js",
+    "website:dev": "webpack-serve --config ./website/webpack.conf.js",
     "website:lint": "eslint  -c website/.eslintrc.js --ext .js,.vue ./website",
     "lint": "npm run server:lint && npm run website:lint"
   },
