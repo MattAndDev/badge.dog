@@ -4,9 +4,12 @@
   "description": "All the badges you need",
   "main": "index.js",
   "scripts": {
-    "start:server": "node index.js",
-    "build:public": "webpack --config ./website/webpack.conf.js",
-    "lint": "standard --plugin html '**/*.html'"
+    "server:start": "node index.js",
+    "server:lint": "eslint *.js",
+    "website:build": "webpack --config ./website/webpack.conf.js",
+    "website:dev": "webpack --config ./website/webpack.conf.js",
+    "website:lint": "eslint  -c website/.eslintrc.js --ext .js,.vue ./website",
+    "lint": "npm run server:lint && npm run website:lint"
   },
   "repository": {
     "type": "git",
@@ -34,13 +37,22 @@
     "@babel/preset-env": "^7.0.0-rc.1",
     "babel-loader": "^8.0.0-beta.4",
     "css-loader": "^1.0.0",
+    "eslint": "^5.4.0",
+    "eslint-config-standard": "^11.0.0",
     "eslint-plugin-html": "^4.0.5",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-vue": "^5.0.0-beta.3",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
     "sass-loader": "^7.1.0",
-    "standard": "^11.0.1",
     "style-loader": "^0.22.1",
+    "vue-loader": "^15.3.0",
+    "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack-serve": "^2.0.2"
   }
 }
