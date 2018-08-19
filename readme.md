@@ -11,7 +11,7 @@ All badges are served at `https://badge.dog/woof/{template-name}.svg`.
 All badges are highly customisable with query parameter, for details see the individual template readmes.
 
 Available templates (more coming soon):
-  - [simple](templates/simple/readme.md)
+  - [simple](api/templates/simple/readme.md)
   
 ## Try it
 
