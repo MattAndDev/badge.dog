@@ -6,14 +6,12 @@
 let defaults = {
   title: 'badge.dog',
   shieldTitle: 'HTML',
-  shieldCharacter: '5',
-  leftBgColor: '#20A69A',
-  leftTextColor: '#FFF',
-  paddingVer: 16,
-  paddingHor: 16,
-  fontSize: 14,
+  shieldBg: '#E34C26',
+  shieldShadow: '#F06529',
+  shieldCharacter: 'five',
   googleFontName: 'Montserrat'
 }
+
 
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -21,33 +19,31 @@ function sleep (ms) {
 
 let config = defaults
 // cast opts
-config.paddingVer = parseInt(config.paddingVer)
-config.paddingHor = parseInt(config.paddingHor)
 var svg = SVG('badge')
 var element = svg.element('title').words(config.title)
 let defs = svg.defs()
 // meh
-// let cssRaw = await fetch(`http://localhost:3100/utils/encodefont/${config.googleFontName}?text=${config.shieldTitle}%20${config.shieldCharacter}`)
-// let css = await cssRaw.text()
-// defs.node.innerHTML = `
-//   <style type="text/css">
-//     ${css}
-//   </style>
-//   `
-
+let cssRaw = await fetch(`http://localhost:3100/utils/encodefont/${config.googleFontName}?text=${config.shieldTitle}%20${config.shieldCharacter}`)
+let css = await cssRaw.text()
+defs.node.innerHTML = `
+  <style type="text/css">
+    ${css}
+  </style>
+  `
+  
+let shieldContentPaths = {
+  tree: 'M20 30 L75 30 L73 58 L21.5 58  L73 58 L71.9 81 L50 90 L29 81 L28.1 70',
+  five: 'M80 30 L 26 30 L27 58 L73 58 L72 81 L50 90 L29 81 L28.1 70',
+  eight: 'M50 30 L 26 30 L27.6 58 L72.5 58  L74 30 L50 30 L 26 30  L29 81 L50 90 L71.8 80 L74 30'
+}
 let shieldPath = 'M0 0 L100 0 L95 100 L50 120 L5 100 Z';
-svg.path(shieldPath).fill('#E34C26')
 let shieldShadow = 'M90 10 L 50 10 L 50 110 L87 94';
-svg.path(shieldShadow).fill('#F06529')
-svg.size(100)
 
 
-let five = 'M80 30 L 25 30 L26 58 L73 58 L72 81 L50 90 L28 81 L27.1 70';
-svg.path(five).stroke({ width: 12, color: '#FFF' }).fill('none')
 
-
-let three = 'M19 30 L75 30 L73 58 L20 58  L73 58 L71.9 81 L50 90 L28 81 L27.1 70';
-svg.path(three).stroke({ width: 12, color: '#FFF' }).fill('none')
+svg.path(shieldPath).fill(config.shieldBg)
+svg.path(shieldShadow).fill(config.shieldShadow)
+svg.path(shieldContentPaths[config.shieldCharacter]).stroke({ width: 12, color: '#FFF' }).fill('none')
 svg.size(120)
 
 })()
