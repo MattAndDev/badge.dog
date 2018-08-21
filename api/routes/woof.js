@@ -42,7 +42,7 @@ const addQueryToTemplate = async (
 const renderHtmlAndGetSvg = async (
   htmlPath
 ) => {
-  let browser = await puppeteer.launch({})
+  let browser = await puppeteer.launch({dumpio: true})
   let page = await browser.newPage()
   page.setViewport({ width: 1000, height: 1000 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
