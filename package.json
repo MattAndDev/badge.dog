@@ -4,9 +4,10 @@
   "description": "All the badges you need",
   "main": "index.js",
   "scripts": {
-    "server:start": "node index.js",
+    "server:dev": "pm2 start ecosystem.config.js --update-env --only badge.dog.dev ",
+    "server:start": "pm2 start ecosystem.config.js --update-env --only badge.dog",
     "server:lint": "eslint *.js",
-    "website:build": "webpack --config ./website/webpack.conf.js",
+    "website:build": "NODE_ENV=production webpack --config ./website/webpack.conf.js",
     "website:dev": "NODE_ENV=development webpack-serve --config ./website/webpack.conf.js",
     "website:lint": "eslint  -c website/.eslintrc.js --ext .js,.vue ./website && sass-lint -c ./website/.sass-lint.yml 'website/**/*.sass' -v",
     "lint": "npm run server:lint && npm run website:lint"
@@ -27,8 +28,10 @@
   },
   "homepage": "https://github.com/MattAndDev/badge.dog#readme",
   "dependencies": {
+    "@vue/component-compiler": "^3.4.4",
     "express": "^4.16.3",
     "node-fetch": "^2.2.0",
+    "pm2": "^3.0.4",
     "puppeteer": "^1.7.0",
     "reset-css": "^4.0.1",
     "vue": "^2.5.17"
@@ -40,7 +43,6 @@
     "css-loader": "^1.0.0",
     "eslint": "^5.4.0",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-html": "^4.0.5",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",

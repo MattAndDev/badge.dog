@@ -4,12 +4,10 @@
 # deps
 node_modules/
 
-# env
-env.js
-
 # generated files
-storage/*
-!storage/.gitkeep
+storage/
+storage-dev/
+
 public/*
 !public/.gitkeep
 !public/static
