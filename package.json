@@ -1,6 +1,6 @@
 {
   "name": "badge.dog",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "All the badges you need",
   "main": "index.js",
   "scripts": {
