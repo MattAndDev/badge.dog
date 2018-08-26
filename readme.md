@@ -12,6 +12,7 @@ All badges are highly customisable with query parameter, for details see the ind
 
 Available templates (more coming soon):
   - [simple](api/templates/simple/readme.md)
+  - [rocks](api/templates/rocks/readme.md)
   
 ## Templates
 
@@ -25,7 +26,7 @@ Available templates (more coming soon):
 
 ### Rocks
 
-[![badge.dog/woof/simple](https://badge.dog/woof/simple.svg)](https://badge.dog/woof/rocks.svg) 
+[![badge.dog/woof/rocks](https://badge.dog/woof/rocks.svg)](https://badge.dog/woof/rocks.svg)    [![badge.dog/woof/rocks](https://badge.dog/woof/rocks.svg?shieldTitle=COOL&shieldCharacter=three&shieldBg=%231C66A6&shieldShadow=%232474A6)](https://badge.dog/woof/rocks.svg?shieldTitle=COOL&shieldCharacter=three&shieldBg=%231C66A6&shieldShadow=%232474A6)  [![badge.dog/woof/rocks](https://badge.dog/woof/rocks.svg?shieldTitle=HATE&shieldCharacter=eight&shieldBg=%23C16B86&shieldShadow=%23F2727F&shieldTitleColor=%236C5B7D)](https://badge.dog/woof/rocks.svg?shieldTitle=HATEFUL&shieldCharacter=eight&shieldBg=%23C16B86&shieldShadow=%23F2727F&shieldTitleColor=%236C5B7D) 
 
 #### THANKS
 Inspired by [for-the-badge](https://forthebadge.com/) && [shields.io](https://shields.io)

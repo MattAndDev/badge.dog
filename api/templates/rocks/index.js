@@ -48,7 +48,6 @@
     let box = placeholder.node.getBBox()
     if (box.width > width || box.height > height) {
       if (box.height * 2 < height && text.length === 1) {
-        // let spaceChunks = text[0].match(/(([a-zA-Z0-9]*) ([a-zA-Z0-9]*))*/)
         placeholder.remove()
         return getCorrectFontSize(text[0].split(' '), {width: 100, height: 40}, size)
       }
@@ -62,7 +61,7 @@
   }
 
   let text = decodeURIComponent(config.shieldTitle).split('\n')
-  await getCorrectFontSize(text, {width: 100, height: 40}, config.shieldTitleSize)
+  await getCorrectFontSize(text, {width: 100, height: 40}, parseInt(config.shieldTitleSize))
 
   let shieldPath = 'M0 0 L100 0 L95 100 L50 120 L5 100 Z'
   svg.path(shieldPath).fill(config.shieldBg).move(0, 40)
