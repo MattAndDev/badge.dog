@@ -15,7 +15,7 @@ const woof = (app, storageDir) => {
     if (!existsSync(targetDir)) {
       mkdirSync(targetDir)
     }
-    if (existsSync(`${targetDir}/${urlHash}.svg`) && !process.env.DEBUG) {
+    if (await existsSync(`${targetDir}/${urlHash}.svg`) && process.env.DEBUG === 'false') {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
