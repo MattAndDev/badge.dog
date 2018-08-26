@@ -4,10 +4,13 @@ module.exports = {
       name: 'badge.dog.dev',
       script: 'index.js',
       watch: true,
+      ignore_watch: ['api/templates', './storage-dev'],
       env: {
-        NODE_ENV: 'test',
+        NODE_ENV: 'development',
         DEBUG: true,
-        PORT: 3100
+        PORT: 3100,
+        HEADLESS: true,
+        STORAGE_DIR: 'storage-dev'
       }
     },
     {
@@ -16,7 +19,9 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         DEBUG: false,
-        PORT: 3100
+        HEADLESS: false,
+        PORT: 3100,
+        STORAGE_DIR: 'storage'
       }
     }
   ]

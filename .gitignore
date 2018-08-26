@@ -5,8 +5,9 @@
 node_modules/
 
 # generated files
-storage/*
-!storage/.gitkeep
+storage/
+storage-dev/
+
 public/*
 !public/.gitkeep
 !public/static
