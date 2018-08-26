@@ -72,15 +72,15 @@
   svg.size(100, 160)
 
   let shieldContentPaths = {
-    tree: 'M20 30 L75 30 L73 58 L21.5 58  L73 58 L71.9 81 L50 90 L29 81 L28.1 70',
-    five: 'M80 30 L 26 30 L27 58 L73 58 L72 81 L50 90 L29 81 L28.1 70',
-    eight: 'M50 30 L 26 30 L27.6 58 L72.5 58  L74 30 L50 30 L 26 30  L29 81 L50 90 L71.8 80 L74 30'
+    three: 'M20 30 L75 30 L73 58 L21.5 58  L73 58 L71.9 81 L50 90 L29 81 L28.1 70',
+    five: 'M80 30 L26 30 L27 58 L73 58 L72 81 L50 90 L29 81 L28.1 70',
+    eight: 'M20 30 L26 30 L27.6 58 L72.5 58 L74 30 L50 30 L 26 30 L29 81 L50 90 L71.8 80 L74 30'
   }
 
   svg.path(shieldContentPaths[config.shieldCharacter])
     .stroke({ width: 12, color: '#FFF' })
-    .fill('none').y(40)
-    .move(26, 70)
+    .fill('none')
+    .y(70)
   await sleep(5)
   let done = document.createElement('div')
   done.id = 'done'
