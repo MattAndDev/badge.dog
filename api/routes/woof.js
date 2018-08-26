@@ -1,28 +1,30 @@
 const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
-const { resolve } = require('path')
+const { resolve, dirname } = require('path')
 const puppeteer = require('puppeteer')
-
-const env = require('../../env')
 
 const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
+    let templatePath = resolve(`./api/templates/${req.params.template}/index.html`)
+    if (!await existsSync(templatePath)) {
+      res.status(404)
+      res.send('Template no found')
+      return false
+    }
     let urlHash = await generateHash(req.url)
     let targetDir = `${storageDir}/${req.params.template}`
     if (!existsSync(targetDir)) {
       mkdirSync(targetDir)
     }
-    if (existsSync(`${targetDir}/${urlHash}.svg`) && !env.forceOverwite) {
+    if (await existsSync(`${targetDir}/${urlHash}.svg`) && process.env.DEBUG === 'false') {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    let html = await addQueryToTemplate(resolve(`./api/templates/${req.params.template}/index.html`), req.query)
-    let htmlPath = `${targetDir}/${urlHash}.html`
+    let html = await addQueryToTemplate(templatePath, req.query)
+    let htmlPath = `${dirname(templatePath)}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
     let svg = await renderHtmlAndGetSvg(htmlPath)
     await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
-    if (!env.keepHtml) {
-      await unlinkSync(htmlPath)
-    }
+    await unlinkSync(htmlPath)
     res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
   })
 }
@@ -42,8 +44,12 @@ const addQueryToTemplate = async (
 const renderHtmlAndGetSvg = async (
   htmlPath
 ) => {
-  let browser = await puppeteer.launch({})
+  let browserOpt = (process.env.NODE_ENV === 'development') ? {dumpio: true, headless: process.env.HEADLESS} : {}
+  let browser = await puppeteer.launch(browserOpt)
   let page = await browser.newPage()
+  if (process.env.NODE_ENV === 'development') {
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()))
+  }
   page.setViewport({ width: 1000, height: 1000 })
   await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
   await page.waitForSelector('#done')
