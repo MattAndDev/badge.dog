@@ -4,9 +4,6 @@
 # deps
 node_modules/
 
-# env
-env.js
-
 # generated files
 storage/*
 !storage/.gitkeep
