@@ -4,6 +4,12 @@ const puppeteer = require('puppeteer')
 
 const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
+    let templatePath = resolve(`./api/templates/${req.params.template}/index.html`)
+    if (!await existsSync(templatePath)) {
+      res.status(404)
+      res.send('Template no found')
+      return false
+    }
     let urlHash = await generateHash(req.url)
     let targetDir = `${storageDir}/${req.params.template}`
     if (!existsSync(targetDir)) {
@@ -13,7 +19,6 @@ const woof = (app, storageDir) => {
       res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
       return false
     }
-    let templatePath = resolve(`./api/templates/${req.params.template}/index.html`)
     let html = await addQueryToTemplate(templatePath, req.query)
     let htmlPath = `${dirname(templatePath)}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
