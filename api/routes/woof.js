@@ -1,6 +1,6 @@
 const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
 const { resolve, dirname } = require('path')
-const puppeteer = require('puppeteer')
+const { renderFile } = require('../services/chromium')
 
 const woof = (app, storageDir) => {
   app.get('/woof/:template.svg', async function (req, res) {
@@ -22,7 +22,7 @@ const woof = (app, storageDir) => {
     let html = await addQueryToTemplate(templatePath, req.query)
     let htmlPath = `${dirname(templatePath)}/${urlHash}.html`
     await writeFileSync(htmlPath, html)
-    let svg = await renderHtmlAndGetSvg(htmlPath)
+    let svg = await renderFile(htmlPath, '#done', '#badge')
     await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
     await unlinkSync(htmlPath)
     res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
@@ -39,23 +39,6 @@ const addQueryToTemplate = async (
       const query = ${JSON.stringify({...query})}
     </script>`.replace(/^ {4}/gm, '')
   return `${js}\n${source}`
-}
-
-const renderHtmlAndGetSvg = async (
-  htmlPath
-) => {
-  let browserOpt = (process.env.NODE_ENV === 'development') ? {dumpio: true, headless: process.env.HEADLESS} : {}
-  let browser = await puppeteer.launch(browserOpt)
-  let page = await browser.newPage()
-  if (process.env.NODE_ENV === 'development') {
-    page.on('console', msg => console.log('PAGE LOG:', msg.text()))
-  }
-  page.setViewport({ width: 1000, height: 1000 })
-  await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
-  await page.waitForSelector('#done')
-  let svg = await page.$eval('#badge', el => el.innerHTML)
-  await browser.close()
-  return svg
 }
 
 const generateHash = async (str) => {
