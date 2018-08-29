@@ -19,7 +19,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         DEBUG: false,
-        HEADLESS: false,
+        HEADLESS: true,
         PORT: 3100,
         STORAGE_DIR: 'storage'
       }
