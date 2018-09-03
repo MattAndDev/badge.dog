@@ -1,4 +1,4 @@
-/* global SVG, fetch, query */
+/* global SVG, utils, query */
 (async () => {
   let defaults = {
     title: 'badge.dog',
@@ -18,16 +18,14 @@
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
-  let config = {...defaults, ...query}
+  let config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
   // cast opts
   config.paddingVer = parseInt(config.paddingVer)
   config.paddingHor = parseInt(config.paddingHor)
   var svg = SVG('badge')
   svg.element('title').words(config.title)
   let defs = svg.defs()
-  // meh
-  let cssRaw = await fetch(`/utils/encodefont/${config.googleFontName}?text=${config.leftText}%20${config.rightText}`)
-  let css = await cssRaw.text()
+  let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=${config.leftText}%20${config.rightText}`)
   defs.node.innerHTML = `
     <style type="text/css">
       ${css}
