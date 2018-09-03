@@ -1,7 +1,14 @@
 module.exports = {
   globals: {
-    DEBUG: false,
-    PORT: 3100,
-    HEADLESS: true
+    env: {
+      NODE_ENV: 'development',
+      DEBUG: false,
+      PORT: 3101,
+      PUPPETEER: {
+        headless: false,
+        deviceScaleFactor: 2
+      },
+      STORAGE_DIR: 'test'
+    }
   }
 }
