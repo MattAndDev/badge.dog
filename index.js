@@ -10,6 +10,7 @@ const bark = async () => {
   }
   woof(app, storageFolder)
   utils(app)
+  app.use('/templates', express.static('./templates'))
   app.use(express.static('./public'))
   app.listen(process.env.PORT)
 }

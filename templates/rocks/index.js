@@ -21,7 +21,7 @@
   svg.element('title').words(config.title)
   let defs = svg.defs()
   // meh
-  let cssRaw = await fetch(`http://localhost:3100/utils/encodefont/${config.googleFontName}?text=${config.shieldTitle}%20${config.shieldCharacter}`)
+  let cssRaw = await fetch(`/utils/encodefont/${config.googleFontName}?text=${config.shieldTitle}%20${config.shieldCharacter}`)
   let css = await cssRaw.text()
   defs.node.innerHTML = `
     <style type="text/css">
