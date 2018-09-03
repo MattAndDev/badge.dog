@@ -1,31 +1,41 @@
 const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
-const { resolve, dirname } = require('path')
-const puppeteer = require('puppeteer')
+const { resolve, relative } = require('path')
+const { renderUrl } = require('../services/chromium')
+const { fromString } = require('../services/hash')
 
 const woof = (app, storageDir) => {
-  app.get('/woof/:template.svg', async function (req, res) {
-    let templatePath = resolve(`./api/templates/${req.params.template}/index.html`)
+  app.get('/woof/:template.:ext', async function (req, res) {
+    let id = await fromString(req.url)
+    let templateDir = resolve(`./templates/${req.params.template}/`)
+    let targetStorageDir = resolve(`${storageDir}/${req.params.template}`)
+    let templatePath = `${templateDir}/index.html`
+    let htmlTempPath = `${templateDir}/${id}.html`
+    let svgPath = `${targetStorageDir}/${id}.svg`
+    let pngPath = `${targetStorageDir}/${id}.png`
+    let reqFile = (req.params.ext === 'svg') ? svgPath : pngPath
     if (!await existsSync(templatePath)) {
       res.status(404)
       res.send('Template no found')
       return false
     }
-    let urlHash = await generateHash(req.url)
-    let targetDir = `${storageDir}/${req.params.template}`
-    if (!existsSync(targetDir)) {
-      mkdirSync(targetDir)
-    }
-    if (await existsSync(`${targetDir}/${urlHash}.svg`) && process.env.DEBUG === 'false') {
-      res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
+
+    if (await existsSync(reqFile) && process.env.DEBUG === 'false') {
+      res.sendFile(reqFile)
       return false
     }
+
     let html = await addQueryToTemplate(templatePath, req.query)
-    let htmlPath = `${dirname(templatePath)}/${urlHash}.html`
-    await writeFileSync(htmlPath, html)
-    let svg = await renderHtmlAndGetSvg(htmlPath)
-    await writeFileSync(`${targetDir}/${urlHash}.svg`, svg)
-    await unlinkSync(htmlPath)
-    res.sendFile(resolve(`${targetDir}/${urlHash}.svg`))
+    await writeFileSync(htmlTempPath, html)
+    let test = relative('./api', htmlTempPath)
+    let {string, screenshot} = await renderUrl(`http://localhost:${process.env.PORT}/${test}`, '#done', 'svg', true)
+
+    if (!await existsSync(targetStorageDir)) {
+      await mkdirSync(targetStorageDir)
+    }
+    await writeFileSync(svgPath, string)
+    await writeFileSync(pngPath, screenshot)
+    await unlinkSync(htmlTempPath)
+    res.sendFile(reqFile)
   })
 }
 
@@ -38,33 +48,8 @@ const addQueryToTemplate = async (
     <script id="data" type="application/javascript">
       const query = ${JSON.stringify({...query})}
     </script>`.replace(/^ {4}/gm, '')
-  return `${js}\n${source}`
-}
-
-const renderHtmlAndGetSvg = async (
-  htmlPath
-) => {
-  let browserOpt = (process.env.NODE_ENV === 'development') ? {dumpio: true, headless: process.env.HEADLESS} : {}
-  let browser = await puppeteer.launch(browserOpt)
-  let page = await browser.newPage()
-  if (process.env.NODE_ENV === 'development') {
-    page.on('console', msg => console.log('PAGE LOG:', msg.text()))
-  }
-  page.setViewport({ width: 1000, height: 1000 })
-  await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' })
-  await page.waitForSelector('#done')
-  let svg = await page.$eval('#badge', el => el.innerHTML)
-  await browser.close()
-  return svg
-}
-
-const generateHash = async (str) => {
-  let hash = 5381
-  let length = str.length
-  while (length) {
-    hash = (hash * 33) ^ str.charCodeAt(--length)
-  }
-  return hash >>> 0
+  source = `${js}\n${source}`
+  return source
 }
 
 module.exports = woof

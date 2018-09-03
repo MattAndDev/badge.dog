@@ -9,7 +9,10 @@ module.exports = {
         NODE_ENV: 'development',
         DEBUG: true,
         PORT: 3100,
-        HEADLESS: true,
+        PUPPETEER: {
+          deviceScaleFactor: 2,
+          headless: false
+        },
         STORAGE_DIR: 'storage-dev'
       }
     },
@@ -19,7 +22,9 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         DEBUG: false,
-        HEADLESS: false,
+        PUPPETEER: {
+          deviceScaleFactor: 2
+        },
         PORT: 3100,
         STORAGE_DIR: 'storage'
       }

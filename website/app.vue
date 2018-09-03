@@ -1,15 +1,15 @@
 <template>
   <div id="App">
-   <Hero />
+    <Hero />
   </div>
 </template>
 <script>
 import 'reset-css/reset.css'
 import Hero from './components/hero'
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-   Hero
+    Hero
   }
 }
 </script>
