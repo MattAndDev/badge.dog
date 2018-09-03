@@ -1,12 +1,12 @@
 const { readFileSync, writeFileSync, unlinkSync, existsSync, mkdirSync } = require('fs')
-const { resolve } = require('path')
-const { renderFile } = require('../services/chromium')
+const { resolve, relative } = require('path')
+const { renderUrl } = require('../services/chromium')
 const { fromString } = require('../services/hash')
 
 const woof = (app, storageDir) => {
   app.get('/woof/:template.:ext', async function (req, res) {
     let id = await fromString(req.url)
-    let templateDir = resolve(`./api/templates/${req.params.template}/`)
+    let templateDir = resolve(`./templates/${req.params.template}/`)
     let targetStorageDir = resolve(`${storageDir}/${req.params.template}`)
     let templatePath = `${templateDir}/index.html`
     let htmlTempPath = `${templateDir}/${id}.html`
@@ -26,10 +26,11 @@ const woof = (app, storageDir) => {
 
     let html = await addQueryToTemplate(templatePath, req.query)
     await writeFileSync(htmlTempPath, html)
-    let {string, screenshot} = await renderFile(htmlTempPath, '#done', 'svg', true)
+    let test = relative('./api', htmlTempPath)
+    let {string, screenshot} = await renderUrl(`http://localhost:${process.env.PORT}/${test}`, '#done', 'svg', true)
 
-    if (!existsSync(targetStorageDir)) {
-      mkdirSync(targetStorageDir)
+    if (!await existsSync(targetStorageDir)) {
+      await mkdirSync(targetStorageDir)
     }
     await writeFileSync(svgPath, string)
     await writeFileSync(pngPath, screenshot)
@@ -47,7 +48,8 @@ const addQueryToTemplate = async (
     <script id="data" type="application/javascript">
       const query = ${JSON.stringify({...query})}
     </script>`.replace(/^ {4}/gm, '')
-  return `${js}\n${source}`
+  source = `${js}\n${source}`
+  return source
 }
 
 module.exports = woof
