@@ -1,4 +1,5 @@
-/* global SVG, fetch, query */
+/* global SVG, utils, query */
+
 (async () => {
   let defaults = {
     title: 'badge.dog',
@@ -10,7 +11,8 @@
     shieldCharacter: 'five',
     googleFontName: 'Montserrat'
   }
-  let config = {...defaults, ...query}
+
+  let config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
 
   function sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -20,14 +22,13 @@
   const svg = SVG('badge')
   svg.element('title').words(config.title)
   let defs = svg.defs()
-  // meh
-  let cssRaw = await fetch(`/utils/encodefont/${config.googleFontName}?text=${config.shieldTitle}%20${config.shieldCharacter}`)
-  let css = await cssRaw.text()
+
+  let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=?text=${config.shieldTitle}%20${config.shieldCharacter}`)
   defs.node.innerHTML = `
     <style type="text/css">
       ${css}
     </style>
-  `
+    `
 
   let getCorrectFontSize = async (text, {width, height}, size) => {
     let placeholder = svg.text((add) => {
