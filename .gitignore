@@ -9,5 +9,3 @@ storage/
 storage-dev/
 
 public/*
-!public/.gitkeep
-!public/static
