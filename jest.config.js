@@ -5,7 +5,7 @@ module.exports = {
       DEBUG: false,
       PORT: 3101,
       PUPPETEER: {
-        headless: false,
+        headless: true,
         deviceScaleFactor: 2
       },
       STORAGE_DIR: 'test'

@@ -3,7 +3,6 @@ const { resolve } = require('path')
 const exec = require('child_process').exec
 const { mkdirSync, existsSync } = require('fs')
 const woof = require('./woof')
-const utils = require('./utils')
 const express = require('express')
 const fetch = require('node-fetch')
 const app = express()
@@ -17,7 +16,6 @@ const bark = async () => {
   }
   app.use('/templates', express.static('./templates'))
   woof(app, storageFolder)
-  utils(app)
   return app.listen(process.env.PORT)
 }
 
