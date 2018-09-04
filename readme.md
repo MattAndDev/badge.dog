@@ -1,4 +1,5 @@
 # badge.dog 🏅 🐶
+[![badge.dog/woof/simple](https://circleci.com/gh/MattAndDev/badge.dog/tree/master.svg?style=shield&circle-token=127ba3ace629ecc195c04eb394b5de49ed02c19f)](https://circleci.com/gh/MattAndDev/badge.dog)
 
 ## Shiny svg badges api
 
@@ -11,8 +12,8 @@ All badges are served at `https://badge.dog/woof/{template-name}.svg`.
 All badges are highly customisable with query parameter, for details see the individual template readmes.
 
 Available templates (more coming soon):
-  - [simple](api/templates/simple/readme.md)
-  - [rocks](api/templates/rocks/readme.md)
+  - [simple](templates/simple/readme.md)
+  - [rocks](templates/rocks/readme.md)
   
 ## Templates
 
