@@ -14,10 +14,6 @@
     googleFontName: 'Lato'
   }
 
-  function sleep (ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
   let config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
   // cast opts
   config.paddingVer = parseInt(config.paddingVer)
@@ -41,7 +37,7 @@
       .font({family: config.googleFontName, size: config.fontSize})
 
     // wait for render
-    await sleep(100)
+    await utils.sleep(50)
 
     let bgSize = [sizer.node.getBBox().width + config.paddingHor, sizer.node.getBBox().height + config.paddingVer]
     let bg = svg.rect(...bgSize)

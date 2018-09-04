@@ -14,5 +14,8 @@ const utils = { // eslint-disable-line no-unused-vars
       })
       reader.readAsDataURL(fontBuffer)
     })
+  },
+  sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 }

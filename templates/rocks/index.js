@@ -14,11 +14,6 @@
 
   let config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
 
-  function sleep (ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
-  // cast opts
   const svg = SVG('badge')
   svg.element('title').words(config.title)
   let defs = svg.defs()
@@ -45,7 +40,7 @@
       fill: config.shieldTitleColor
     })
       .move(50, 0)
-    await sleep(5)
+    await utils.sleep(5)
     let box = placeholder.node.getBBox()
     if (box.width > width || box.height > height) {
       if (box.height * 2 < height && text.length === 1) {
@@ -81,7 +76,7 @@
     .stroke({ width: 12, color: '#FFF' })
     .fill('none')
     .y(70)
-  await sleep(5)
+  await utils.sleep(5)
   let done = document.createElement('div')
   done.id = 'done'
   document.body.appendChild(done)
