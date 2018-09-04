@@ -6,7 +6,8 @@ module.exports = {
       PORT: 3101,
       PUPPETEER: {
         headless: true,
-        deviceScaleFactor: 2
+        deviceScaleFactor: 2,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
       },
       STORAGE_DIR: 'test'
     }
