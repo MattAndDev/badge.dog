@@ -77,7 +77,5 @@
     .fill('none')
     .y(70)
   await utils.sleep(5)
-  let done = document.createElement('div')
-  done.id = 'done'
-  document.body.appendChild(done)
+  utils.saveBadge()
 })()

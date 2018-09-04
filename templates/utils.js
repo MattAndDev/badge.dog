@@ -17,5 +17,10 @@ const utils = { // eslint-disable-line no-unused-vars
   },
   sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
+  },
+  saveBadge () {
+    let done = document.createElement('div')
+    done.id = 'done'
+    document.body.appendChild(done)
   }
 }

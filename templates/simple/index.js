@@ -60,9 +60,7 @@
 
     if (i === blocks.length - 1) {
       svg.size(offset)
-      let done = document.createElement('div')
-      done.id = 'done'
-      document.body.appendChild(done)
+      utils.saveBadge()
     }
   })
 })()
