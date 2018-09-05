@@ -1,4 +1,4 @@
-/* global SVG, utils, query */
+/* global  utils, query */
 (async () => {
   let defaults = {
     title: 'badge.dog',
@@ -14,52 +14,59 @@
     googleFontName: 'Lato'
   }
 
-  let config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
+  const createSvgElem = (elem) => document.createElementNS('http://www.w3.org/2000/svg', elem)
+  const config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
+
   // cast opts
   config.paddingVer = parseInt(config.paddingVer)
   config.paddingHor = parseInt(config.paddingHor)
-  var svg = SVG('badge')
-  svg.element('title').words(config.title)
-  let defs = svg.defs()
+
+  const svg = createSvgElem('svg')
+  document.getElementById('badge').appendChild(svg)
+
+  let title = createSvgElem('title')
+  title.innerHTML = config.title
+  svg.appendChild(title)
+  let defs = createSvgElem('defs')
   let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=${config.leftText}%20${config.rightText}`)
-  defs.node.innerHTML = `
-    <style type="text/css">
+  defs.innerHTML = `
+    <style type='text/css'>
       ${css}
     </style>
     `
-
+  svg.appendChild(defs)
   let blocks = ['left', 'right']
   let offset = 0
+
   blocks.forEach(async (block, i) => {
-    let sizer = svg.text(config[`${block}Text`])
-    sizer
-      .move(0, 0)
-      .font({family: config.googleFontName, size: config.fontSize})
+    let text = createSvgElem('text')
+    svg.appendChild(text)
+    text.innerHTML = config[`${block}Text`]
+    text.setAttribute('y', 0)
+    Object.assign(text.style, {
+      fontFamily: config.googleFontName,
+      fill: config[`${block}TextColor`],
+      fontSize: config.fontSize,
+      dominantBaseline: 'hanging'
+    })
 
-    // wait for render
-    await utils.sleep(50)
+    await utils.sleep(10)
 
-    let bgSize = [sizer.node.getBBox().width + config.paddingHor, sizer.node.getBBox().height + config.paddingVer]
-    let bg = svg.rect(...bgSize)
-    bg
-      .fill(config[`${block}BgColor`])
-      .move(0, 0)
-      .x(offset)
+    text.setAttribute('y', config.paddingVer / 2 + 2)
+    text.setAttribute('x', offset + config.paddingHor / 2)
+    let bg = createSvgElem('rect')
+    Object.assign(bg.style, {
+      fill: config[`${block}BgColor`],
+      width: text.getBBox().width + config.paddingHor,
+      height: text.getBBox().height + config.paddingVer
+    })
 
-    let text = svg.text(config[`${block}Text`])
-    text
-      .fill(config[`${block}TextColor`])
-      .move(0, 0)
-      .font({family: config.googleFontName, size: config.fontSize})
-      .y(config.paddingVer / 2)
-      .x(offset + config.paddingHor / 2)
-
-    sizer.node.remove()
-
-    offset = offset + bgSize[0]
-
+    bg.setAttribute('x', offset)
+    svg.insertBefore(bg, text)
+    offset = offset + parseInt(bg.style.width)
     if (i === blocks.length - 1) {
-      svg.size(offset)
+      svg.setAttribute('width', offset)
+      svg.setAttribute('height', text.getBBox().height + config.paddingVer)
       utils.saveBadge()
     }
   })
