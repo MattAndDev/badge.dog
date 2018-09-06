@@ -21,9 +21,27 @@ const utils = { // eslint-disable-line no-unused-vars
       reader.readAsDataURL(fontBuffer)
     })
   },
+
+  createSvgElem: async (elem, attributes = false, styles = false, appendTarget) => {
+    let svgElem = document.createElementNS('http://www.w3.org/2000/svg', elem)
+    if (styles) {
+      Object.assign(svgElem.style, styles)
+    }
+    if (attributes && attributes.length) {
+      attributes.forEach(async (attr) => {
+        svgElem.setAttribute(attr[0], attr[1])
+      })
+    }
+    if (appendTarget) {
+      appendTarget.appendChild(svgElem)
+    }
+    return svgElem
+  },
+
   sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   },
+
   saveBadge () {
     let done = document.createElement('div')
     done.id = 'done'

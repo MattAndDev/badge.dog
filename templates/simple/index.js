@@ -11,7 +11,7 @@
     paddingVer: 16,
     paddingHor: 16,
     fontSize: 14,
-    googleFontName: 'Helvetica'
+    googleFontName: 'Lato'
   }
 
   const createSvgElem = (elem) => document.createElementNS('http://www.w3.org/2000/svg', elem)
@@ -56,8 +56,7 @@
       fontFamily: config.googleFontName,
       fill: config[`${block}TextColor`],
       fontSize: config.fontSize,
-      dominantBaseline: 'hanging',
-      alignmentBaseline: 'baseline'
+      dominantBaseline: 'hanging'
     })
 
     // background

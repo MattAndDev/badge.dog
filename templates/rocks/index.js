@@ -2,30 +2,30 @@
 (async () => {
   let defaults = {
     title: 'badge.dog',
-    shieldTitle: 'CSS ',
+    shieldTitle: 'HTML',
     shieldTitleSize: 50,
     shieldTitleColor: '#333',
     shieldBg: '#E34C26',
     shieldShadow: '#F06529',
     shieldCharacter: 'five',
     shieldCharacterColor: '#FFF',
-    googleFontName: 'Helvetica'
+    googleFontName: 'Roboto'
   }
-  const createSvgElem = (elem) => document.createElementNS('http://www.w3.org/2000/svg', elem)
+
   let config = (typeof query !== 'undefined') ? { ...defaults, ...query } : defaults
   // container
-  const svg = createSvgElem('svg')
+  const svg = await utils.createSvgElem('svg')
   document.getElementById('badge').appendChild(svg)
   const shieldSize = { width: 100, height: 160 }
 
   // title
-  let title = createSvgElem('title')
+  let title = await utils.createSvgElem('title', false, false, svg)
   title.innerHTML = config.title
   svg.appendChild(title)
 
   // custom font
-  let defs = createSvgElem('defs')
-  let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=${config.leftText}%20${config.rightText}`)
+  let defs = await utils.createSvgElem('defs')
+  let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=${config.shieldTitle}`)
   if (css) {
     defs.innerHTML = `
     <style type='text/css'>
@@ -36,31 +36,34 @@
   }
 
   let splitTextToFit = async (textToSplit, { width, height }, fontSize) => {
-    let text = createSvgElem('text')
-    textToSplit.forEach((chunk, i) => {
+    let text = await utils.createSvgElem(
+      'text', [['y', 0]],
+      {
+        fontFamily: config.googleFontName,
+        fill: config.shieldTitleColor,
+        fontSize: fontSize,
+        fontWeight: 900,
+        dominantBaseline: 'hanging',
+        alignmentBaseline: 'baseline',
+        textAnchor: 'middle',
+        transform: 'translate(0, 5px)'
+      },
+      svg
+    )
+    textToSplit.forEach(async (chunk, i) => {
       if (!chunk.length) return
-      let tspan = createSvgElem('tspan')
+      let tspan = await utils.createSvgElem(
+        'tspan',
+        [
+          ['y', i * fontSize],
+          ['x', shieldSize.width / 2]
+        ],
+        { textAnchor: 'middle' },
+        text
+      )
       tspan.innerHTML = chunk
-      text.appendChild(tspan)
-      tspan.setAttribute('y', i * fontSize / 2)
-      tspan.setAttribute('x', shieldSize.width / 2)
-      Object.assign(tspan.style, {
-        textAnchor: 'middle'
-      })
     })
-
-    svg.appendChild(text)
-    Object.assign(text.style, {
-      fontFamily: config.googleFontName,
-      fill: config.shieldTitleColor,
-      fontSize: fontSize,
-      fontWeight: 900,
-      dominantBaseline: 'hanging',
-      alignmentBaseline: 'baseline',
-      textAnchor: 'middle',
-      transform: 'translate(0, 10px)'
-    })
-
+    await utils.sleep(10)
     let box = text.getBBox()
     text.setAttribute('x', shieldSize.width / 2)
     if (box.width > width || box.height > height) {
@@ -72,41 +75,25 @@
       return splitTextToFit(textToSplit, { width: 100, height: 40 }, fontSize - 1)
     }
     await utils.sleep(5)
-    return box.height + 10
-  }
-
-  let addPath = async (attributes, styles, target) => {
-    let pathElem = createSvgElem('path')
-    if (styles) {
-      Object.assign(pathElem.style, styles)
-    }
-    if (attributes.length) {
-      attributes.forEach(async (attr) => {
-        pathElem.setAttribute(attr[0], attr[1])
-      })
-    }
-    if (target) {
-      target.appendChild(pathElem)
-    }
-    return pathElem
+    return box.height + (textToSplit.length - 1) * 2
   }
 
   let text = decodeURIComponent(config.shieldTitle).split('\n')
-  await splitTextToFit(text, { width: 100, height: 40 }, parseInt(config.shieldTitleSize))
+  let textHeight = await splitTextToFit(text, { width: 100, height: 40 }, parseInt(config.shieldTitleSize))
   let shieldPath = 'M0 0 L100 0 L95 100 L50 120 L5 100 Z'
-  addPath(
+  await utils.createSvgElem(
+    'path',
     [['d', shieldPath]],
-    { fill: config.shieldBg, transform: `translate(0, ${40}px)` },
+    { fill: config.shieldBg, transform: `translate(0, ${textHeight}px)` },
     svg
   )
   let shieldShadow = 'M90 10 L 50 10 L 50 110 L87 94'
-  addPath(
+  await utils.createSvgElem(
+    'path',
     [['d', shieldShadow]],
-    { fill: config.shieldShadow, transform: `translate(0, ${40}px)` },
+    { fill: config.shieldShadow, transform: `translate(0, ${textHeight}px)` },
     svg
   )
-  svg.setAttribute('width', shieldSize.width)
-  svg.setAttribute('height', shieldSize.height)
   let shieldContentPaths = {
     three: 'M20 30 L75 30 L73 58 L21.5 58  L73 58 L71.9 81 L50 90 L29 81 L28.1 70',
     five: 'M80 30 L26 30 L27 58 L73 58 L72 81 L50 90 L29 81 L28.1 70',
@@ -116,17 +103,18 @@
     // await utils.error(Message)
     return false
   }
-  addPath(
-    [
-      ['d', shieldContentPaths[config.shieldCharacter]]
-    ],
+  await utils.createSvgElem(
+    'path',
+    [['d', shieldContentPaths[config.shieldCharacter]]],
     {
       strokeWidth: 12,
       stroke: config.shieldCharacterColor,
       fill: 'none',
-      transform: `translate(0, ${40}px)`
+      transform: `translate(0, ${textHeight}px)`
     },
     svg
   )
+  svg.setAttribute('width', shieldSize.width)
+  svg.setAttribute('height', textHeight + 120)
   utils.saveBadge()
 })()
