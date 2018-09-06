@@ -35,10 +35,10 @@ const renderUrl = async (
   let screenshot = false
   if (takeScreenshot) {
     let screenshotHandle = (returnSelector) ? await page.$(returnSelector) : page
-    screenshot = await screenshotHandle.screenshot({omitBackground: true})
+    screenshot = await screenshotHandle.screenshot({ omitBackground: true })
   }
   await browser.close()
-  return {string, screenshot}
+  return { string, screenshot }
 }
 
 module.exports = {

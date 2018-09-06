@@ -14,7 +14,14 @@
 
   let config = (typeof query !== 'undefined') ? { ...defaults, ...query } : defaults
   // container
-  const svg = await utils.createSvgElem('svg')
+  // container
+  const svg = await utils.createSvgElem(
+    'svg',
+    [
+      ['xmlns', 'http://www.w3.org/2000/svg'],
+      ['xmlns:xlink', 'http://www.w3.org/1999/xlink']
+    ]
+  )
   document.getElementById('badge').appendChild(svg)
   const shieldSize = { width: 100, height: 160 }
 
