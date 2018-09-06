@@ -1,19 +1,6 @@
-/* global utils, query */
+/* global utils, query, opts */
 (async () => {
-  let defaults = {
-    title: 'badge.dog',
-    shieldTitle: 'HTML',
-    shieldTitleSize: 50,
-    shieldTitleColor: '#333',
-    shieldBg: '#E34C26',
-    shieldShadow: '#F06529',
-    shieldCharacter: 'five',
-    shieldCharacterColor: '#FFF',
-    googleFontName: 'Roboto'
-  }
-
-  let config = (typeof query !== 'undefined') ? { ...defaults, ...query } : defaults
-  // container
+  const config = (typeof query !== 'undefined') ? { ...opts, ...query } : opts
   // container
   const svg = await utils.createSvgElem(
     'svg',

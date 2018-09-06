@@ -1,21 +1,7 @@
-/* global  utils, query */
+/* global  utils, query, opts */
 (async () => {
-  let defaults = {
-    title: 'badge.dog',
-    leftText: 'BADGE',
-    leftBgColor: '#20A69A',
-    leftTextColor: '#FFF',
-    rightText: 'DOG',
-    rightBgColor: '#043B40',
-    rightTextColor: '#FFF',
-    paddingVer: 16,
-    paddingHor: 16,
-    fontSize: 14,
-    googleFontName: 'Lato'
-  }
-
   const createSvgElem = (elem) => document.createElementNS('http://www.w3.org/2000/svg', elem)
-  const config = (typeof query !== 'undefined') ? { ...defaults, ...query } : defaults
+  const config = (typeof query !== 'undefined') ? { ...opts, ...query } : opts
 
   // cast opts
   config.paddingVer = parseInt(config.paddingVer)
