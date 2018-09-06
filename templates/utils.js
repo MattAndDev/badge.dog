@@ -42,6 +42,12 @@ const utils = { // eslint-disable-line no-unused-vars
     return new Promise(resolve => setTimeout(resolve, ms))
   },
 
+  asyncForEach: async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  },
+
   saveBadge () {
     let done = document.createElement('div')
     done.id = 'done'

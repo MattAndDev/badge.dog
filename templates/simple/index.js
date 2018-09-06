@@ -45,29 +45,34 @@
   let blocks = ['left', 'right']
   let offset = 0
 
-  blocks.forEach(async (block, i) => {
+  utils.asyncForEach(blocks, async (block, i) => {
     // text
-    let text = createSvgElem('text')
-    svg.appendChild(text)
+    let text = await utils.createSvgElem(
+      'text', [
+        ['x', offset + config.paddingHor / 2],
+        ['y', config.paddingVer / 2 + 2]
+      ],
+      {
+        fontFamily: config.googleFontName,
+        fill: config[`${block}TextColor`],
+        fontSize: config.fontSize,
+        dominantBaseline: 'hanging'
+      },
+      svg
+    )
     text.innerHTML = config[`${block}Text`]
-    text.setAttribute('y', config.paddingVer / 2 + 2)
-    text.setAttribute('x', offset + config.paddingHor / 2)
-    Object.assign(text.style, {
-      fontFamily: config.googleFontName,
-      fill: config[`${block}TextColor`],
-      fontSize: config.fontSize,
-      dominantBaseline: 'hanging'
-    })
 
     // background
-    let bg = createSvgElem('rect')
+    let bg = await utils.createSvgElem(
+      'rect',
+      [['x', offset]],
+      {
+        fill: config[`${block}BgColor`],
+        width: text.getBBox().width + config.paddingHor,
+        height: text.getBBox().height + config.paddingVer
+      }
+    )
     svg.insertBefore(bg, text)
-    bg.setAttribute('x', offset)
-    Object.assign(bg.style, {
-      fill: config[`${block}BgColor`],
-      width: text.getBBox().width + config.paddingHor,
-      height: text.getBBox().height + config.paddingVer
-    })
 
     // increment offset
     offset = offset + parseInt(bg.style.width)
