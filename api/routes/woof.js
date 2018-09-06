@@ -33,6 +33,7 @@ const woof = (app, storageDir) => {
     await writeFileSync(svgPath, string)
     await writeFileSync(pngPath, screenshot)
     await unlinkSync(htmlTempPath)
+    res.header('Access-Control-Allow-Origin', '*')
     res.sendFile(reqFile)
   })
 }
@@ -43,7 +44,7 @@ const addQueryToTemplate = async (
 ) => {
   let source = await readFileSync(templatePath).toString()
   let js = `
-    <script id="data" type="application/javascript">
+    <script id='data' type='application/javascript'>
       const query = ${JSON.stringify({...query})}
     </script>`.replace(/^ {4}/gm, '')
   source = `${js}\n${source}`
