@@ -9,22 +9,11 @@
       <p v-if="template">Selected: {{ template }}</p>
     </div>
     <div class="builder_options">
-      <div class="builder_options_cell" v-for="opt in typedTemplateOptions">
-        <template v-if="opt.type === 'color'">
-          <label for="color">{{ opt.name }}</label>
-          <input type="color" v-model="templateOptions[opt.name]">
-        </template>
-        <template v-if="opt.type === 'text'">
-          <label :for="opt.name">{{ opt.name }}</label>
-          <input :id="opt.name" type="text" v-model="templateOptions[opt.name]">
-        </template>
-        <template v-if="opt.type === 'number'">
-          <label :for="opt.name">{{ opt.name }}</label>
-          <input :id="opt.name" type="number" v-model="templateOptions[opt.name]">
-        </template>
+      <div v-for="opt in typedTemplateOptions" class="builder_options_cell">
+        <label :for="opt.name">{{ opt.name }}</label>
+        <input  v-model="templateOptions[opt.name]" :id="opt.name" :type="opt.type">
       </div>
     </div>
-
     <div class="" v-html="result">
     </div>
     <button v-if="template" type="button" name="button" @click="getTemplate">get</button>
