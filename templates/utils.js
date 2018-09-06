@@ -16,7 +16,7 @@ const utils = { // eslint-disable-line no-unused-vars
       let fontBuffer = await fontRaw.blob()
       var reader = new FileReader()
       reader.addEventListener('load', function () {
-        resolve([googleCssStyles, this.result])
+        resolve(googleCssStyles.replace(link, this.result))
       })
       reader.readAsDataURL(fontBuffer)
     })
