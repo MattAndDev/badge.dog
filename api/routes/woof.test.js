@@ -8,7 +8,7 @@ const fetch = require('node-fetch')
 const app = express()
 const storageFolder = resolve('./test')
 
-process.env = {...process.env, ...env}
+process.env = { ...process.env, ...env }
 
 const bark = async () => {
   if (!await existsSync(storageFolder)) {

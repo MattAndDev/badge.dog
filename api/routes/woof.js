@@ -26,9 +26,7 @@ const woof = (app, storageDir) => {
 
     let html = await addQueryToTemplate(templatePath, req.query)
     await writeFileSync(htmlTempPath, html)
-    let test = relative('./api', htmlTempPath)
-    let {string, screenshot} = await renderUrl(`http://localhost:${process.env.PORT}/${test}`, '#done', 'svg', true)
-
+    let { string, screenshot } = await renderUrl(`http://localhost:${process.env.PORT}/${relative('./', htmlTempPath)}`, '#done', 'svg', true)
     if (!await existsSync(targetStorageDir)) {
       await mkdirSync(targetStorageDir)
     }
