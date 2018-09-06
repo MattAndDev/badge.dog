@@ -11,11 +11,11 @@
     paddingVer: 16,
     paddingHor: 16,
     fontSize: 14,
-    googleFontName: 'Lato'
+    googleFontName: 'Helvetica'
   }
 
   const createSvgElem = (elem) => document.createElementNS('http://www.w3.org/2000/svg', elem)
-  const config = (typeof query !== 'undefined') ? {...defaults, ...query} : defaults
+  const config = (typeof query !== 'undefined') ? { ...defaults, ...query } : defaults
 
   // cast opts
   config.paddingVer = parseInt(config.paddingVer)
@@ -33,12 +33,14 @@
   // custom font
   let defs = createSvgElem('defs')
   let css = await utils.googleFontEncode(`https://fonts.googleapis.com/css?family=${config.googleFontName}&text=${config.leftText}%20${config.rightText}`)
-  defs.innerHTML = `
+  if (css) {
+    defs.innerHTML = `
     <style type='text/css'>
-      ${css}
+    ${css}
     </style>
     `
-  svg.appendChild(defs)
+    svg.appendChild(defs)
+  }
 
   let blocks = ['left', 'right']
   let offset = 0
@@ -54,7 +56,8 @@
       fontFamily: config.googleFontName,
       fill: config[`${block}TextColor`],
       fontSize: config.fontSize,
-      dominantBaseline: 'hanging'
+      dominantBaseline: 'hanging',
+      alignmentBaseline: 'baseline'
     })
 
     // background

@@ -3,7 +3,13 @@
 const utils = { // eslint-disable-line no-unused-vars
   googleFontEncode: async (url) => {
     return new Promise(async (resolve, reject) => {
-      let googleRes = await fetch(url)
+      let googleRes = false
+      try {
+        googleRes = await fetch(url)
+      } catch (e) {
+        resolve(false)
+        return
+      }
       let googleCssStyles = await googleRes.text()
       let link = googleCssStyles.match(/https:\/\/[^)]+/g)[0]
       let fontRaw = await fetch(link)
