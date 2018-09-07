@@ -10,8 +10,13 @@
     </div>
     <div class="builder_options">
       <div v-for="opt in typedTemplateOptions" class="builder_options_cell">
-        <label :for="opt.name">{{ opt.name }}</label>
-        <input  v-model="templateOptions[opt.name]" :id="opt.name" :type="opt.type">
+        <label class="builder_options_label" :for="opt.name">{{ opt.label }}</label>
+        <input 
+          v-model="templateOptions[opt.name]" 
+          :id="opt.name" 
+          :class="`builder_options_input builder_options_input-${opt.type}`"
+          :type="opt.type"
+        >
       </div>
     </div>
     <div class="" v-html="result">
@@ -20,6 +25,6 @@
   </div>
 </template>
 <script src="./builder.js"></script>
-  <style lang="sass">
-  @import 'builder'
-  </style>
+<style lang="sass">
+@import 'builder'
+</style>

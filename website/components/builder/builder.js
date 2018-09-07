@@ -19,9 +19,12 @@ export default {
           case 'number':
             type = 'number'
         }
+        let label = opt.match(/([a-z]|[A-Z])[a-z]+/g).join(' ').toLowerCase()
+        label = label.charAt(0).toUpperCase() + label.slice(1)
         opts.push({
-          name: opt,
+          label,
           type,
+          name: opt,
           value: this.templateOptions[opt]
         })
       }
@@ -31,7 +34,6 @@ export default {
   data () {
     return {
       template: '',
-      bgColor: '#ffffff',
       result: '',
       templateOptions: {},
       isLoading: false
