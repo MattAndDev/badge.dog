@@ -1,0 +1,31 @@
+@import '../../styles/config.sizes'
+.input-select
+  position: relative
+
+.input-select_native
+  display: none
+
+.input-select_input
+  display: block
+  width: 100%
+  height: $input-height
+  padding: $input-padding
+  border: none
+  border-radius: $input-border-radius
+  font-family: $input-font-family
+  font-size: $input-font-size
+  line-height: $input-line-height
+  box-sizing: border-box
+  
+.input-select_options
+  position: absolute
+  top: 100%
+  right: 0
+  left: 0
+  background: white
+  text-align: left
+
+.input-select_options_item
+  height: $input-height
+  padding: $input-padding
+  line-height: $input-line-height
