@@ -1,5 +1,11 @@
+import InputSelect from '../input-select'
+import InputLabel from '../input-label'
 export default {
   name: 'builder',
+  components: {
+    InputSelect,
+    InputLabel
+  },
   computed: {
     typedTemplateOptions () {
       let opts = []
@@ -36,11 +42,16 @@ export default {
       template: '',
       result: '',
       templateOptions: {},
-      isLoading: false
+      isLoading: false,
+      templateTypes: [
+        { name: 'Simple', value: 'simple' },
+        { name: 'Rocks', value: 'rocks' }
+      ]
     }
   },
   methods: {
-    getTemplate: async function () {
+    getTemplate: async function (template) {
+      this.template = template.value
       this.isLoading = true
       this.result = ''
       var queryString = Object.keys(this.templateOptions).map(key => key + '=' + encodeURIComponent(this.templateOptions[key])).join('&')

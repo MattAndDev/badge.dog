@@ -1,11 +1,12 @@
 <template>
   <div class="builder">
     <div class="builder_template">
-      <select v-model="template" @change="getTemplate">
-        <option disabled value="">Choose your template</option>
-        <option value='simple'>Simple</option>
-        <option value='rocks'>Rocks</option>
-      </select>
+      <input-label :name="'Template:'" />
+      <input-select
+        @change="getTemplate"
+        :placeholder="'Choose...'"
+        :options="templateTypes"
+      />
       <p v-if="template">Selected: {{ template }}</p>
     </div>
     <div class="builder_options">
