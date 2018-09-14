@@ -43,13 +43,13 @@
     let text = await utils.createSvgElem(
       'text', [
         ['x', offset + config.paddingHor / 2],
-        ['y', config.paddingVer / 2 + 2]
+        ['y', config.paddingVer / 2 + config.fontSize / 2 + 2]
       ],
       {
         fontFamily: config.googleFontName,
         fill: config[`${block}TextColor`],
         fontSize: config.fontSize,
-        dominantBaseline: 'hanging'
+        dominantBaseline: 'middle'
       },
       svg
     )
@@ -60,16 +60,15 @@
       'rect',
       [['x', offset]],
       {
-        fill: config[`${block}BgColor`],
-        width: text.getBBox().width + config.paddingHor,
-        height: text.getBBox().height + config.paddingVer
+        fill: config[`${block}BgColor`]
       }
     )
+    bg.setAttribute('width', text.getBBox().width + config.paddingHor)
+    bg.setAttribute('height', text.getBBox().height + config.paddingVer)
     svg.insertBefore(bg, text)
 
     // increment offset
-    offset = offset + parseInt(bg.style.width)
-
+    offset = offset + parseInt(bg.getAttribute('width'))
     if (i === blocks.length - 1) {
       // set svg size and save
       svg.setAttribute('width', offset)
