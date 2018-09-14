@@ -31,16 +31,14 @@
 
   let splitTextToFit = async (textToSplit, { width, height }, fontSize) => {
     let text = await utils.createSvgElem(
-      'text', [['y', 0]],
+      'text', [],
       {
         fontFamily: config.googleFontName,
         fill: config.shieldTitleColor,
         fontSize: fontSize,
         fontWeight: 900,
-        dominantBaseline: 'hanging',
-        alignmentBaseline: 'baseline',
-        textAnchor: 'middle',
-        transform: 'translate(0, 5px)'
+        dominantBaseline: 'text-before-edge',
+        textAnchor: 'middle'
       },
       svg
     )
