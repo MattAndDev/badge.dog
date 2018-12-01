@@ -4,7 +4,7 @@ module.exports = {
       name: 'badge.dog.dev',
       script: 'index.js',
       watch: true,
-      ignore_watch: ['api/templates', './storage-dev'],
+      ignore_watch: ['/templates', './storage-dev'],
       env: {
         NODE_ENV: 'development',
         DEBUG: true,
