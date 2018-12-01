@@ -44,7 +44,7 @@ const addQueryToTemplate = async (
   let source = await readFileSync(templatePath).toString()
   let js = `
     <script id="data" type="application/javascript">
-      const query = ${JSON.stringify({...query})}
+      const query = ${JSON.stringify({ ...query })}
     </script>`.replace(/^ {4}/gm, '')
   source = `${js}\n${source}`
   return source

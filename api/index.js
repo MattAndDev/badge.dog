@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const { mkdirSync, existsSync } = require('fs')
-const { woof } = require('./api/routes')
+const { woof } = require('./routes')
 const express = require('express')
 const app = express()
 const storageFolder = resolve(process.env.STORAGE_DIR)
@@ -10,7 +10,6 @@ const bark = async () => {
   }
   woof(app, storageFolder)
   app.use('/templates', express.static('./templates'))
-  app.use(express.static('./public'))
   app.listen(process.env.PORT)
 }
 

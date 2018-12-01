@@ -8,7 +8,7 @@ const { InjectManifest } = require('workbox-webpack-plugin')
 module.exports = {
   mode: (process.env.NODE_ENV === 'development') ? 'development' : 'production',
   entry: [
-    path.resolve('./website/index.js')
+    path.resolve('./index.js')
   ],
   output: {
     path: path.resolve('./public')
@@ -60,7 +60,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve('./website/index.html')
+      template: path.resolve('./index.html')
     }),
     new VueLoaderPlugin(),
     // this will kick in only in NODE_ENV production
@@ -68,7 +68,7 @@ module.exports = {
       filename: `[name].css`
     }),
     new InjectManifest({
-      swSrc: './website/service-worker.js'
+      swSrc: './service-worker.js'
     })
   ],
   resolve: {
